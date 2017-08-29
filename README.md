@@ -11,7 +11,7 @@ A simple bash script used to generate boilerplates.
 Furthermore, if you want bash-autocompletion, follow the below instructions:
 
 1. [Install boilerplates-completion](https://github.com/scop/bash-completion)
-2. Source [bash-completion.sh](bash-completion.sh) from ~/.bash_completion
+2. Source [bash-completion.sh](bash-completion.sh) from `~/.bash_completion`
 
 ## Usage
 
