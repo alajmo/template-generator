@@ -86,6 +86,13 @@ Usage:
   preview|p boilerplate                   Preview boilerplate
   edit|e boilerplate                      Edit boilerplate in editor
 
+Looks for boilerplates in the following directories (in the given order):
+  Environment variable BOILERPLATES_PATH
+  \$PWD/.boilerplates/
+  \$PWD/boilerplates/
+  ~/.boilerplates/
+  ~/boilerplates/
+
 HEREDOC
 }
 

@@ -2,7 +2,16 @@
 
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
-A simple bash script used to generate common boilerplates such as html files, README's, reset.css etc.
+A simple bash script used to generate boilerplates.
+
+## Install
+
+1. Put the file [tp](tp) in an executable path.
+
+Furthermore, if you want bash-autocompletion, follow the below instructions:
+
+1. [Install boilerplates-completion](https://github.com/scop/bash-completion)
+2. Source [bash-completion.sh](bash-completion.sh) from ~/.bash_completion
 
 ## Usage
 
