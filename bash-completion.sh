@@ -26,16 +26,16 @@ _tp() {
     local cur;
     _get_comp_words_by_ref cur;
 
-    local prev
-    prev=${COMP_WORDS[COMP_CWORD-2]}
-
     local base_path;
     base_path=$(_get_boilerplates_path)
 
     local base_path_escaped;
     base_path_escaped=${base_path//\//\\\/}
 
-    if [ "$prev" = "g" ] || [ "$LEVEL" = "generate" ]; then
+    # 4rd argument requires seperate tab-completion.
+    local prev
+    prev=${COMP_WORDS[COMP_CWORD-2]}
+    if [ "$prev" = "g" ] || [ "$prev" = "generate" ]; then
         _filedir
         return 0
     else
