@@ -82,9 +82,9 @@ Options:
 
 Usage:
   list|ls|l [subdirectory]                List boilerplates
-  generate|g boilerplate [destination]    Generate boilerplate
-  preview|p boilerplate                   Preview boilerplate
-  edit|e boilerplate                      Edit boilerplate in editor
+  generate|g [boilerplate] [destination]  Generate boilerplate
+  preview|p [boilerplate]                 Preview boilerplate
+  edit|e [boilerplate]                    Edit boilerplate in editor
 
 Looks for boilerplates in the following directories (in the given order):
   Environment variable BOILERPLATES_PATH
