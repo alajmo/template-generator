@@ -26,29 +26,38 @@ _tp() {
     local cur;
     _get_comp_words_by_ref cur;
 
-    local tmp;
-    tmp=$(_get_boilerplates_path)
+    local prev
+    prev=${COMP_WORDS[COMP_CWORD-2]}
 
-    local tmp_escaped;
-    tmp_escaped=${tmp//\//\\\/}
-    cur=$tmp$cur;
+    local base_path;
+    base_path=$(_get_boilerplates_path)
+
+    local base_path_escaped;
+    base_path_escaped=${base_path//\//\\\/}
+
+    if [ "$prev" = "g" ] || [ "$LEVEL" = "generate" ]; then
+        _filedir
+        return 0
+    else
+        cur=$base_path$cur;
+    fi;
 
     if [ "$1" == "-d" ]; then
         _cd
     else
-        _filedir;
+        _filedir
     fi;
 
     local i;
     local _compreply=()
     for i in "${COMPREPLY[@]}"; do
-        [ -d "$i" ] && [ "$i" != "$tmp." ] && [ "$i" != "$tmp.." ] && i="$i/"
+        [ -d "$i" ] && [ "$i" != "$base_path." ] && [ "$i" != "$base_path.." ] && i="$i/"
         if [[ $i != *"/.git/"* ]] && [[ $i != *"./"* ]]; then
             _compreply=("${_compreply[@]}" "$i")
         fi
     done
 
-    COMPREPLY=(${_compreply[@]/$tmp_escaped/})
+    COMPREPLY=(${_compreply[@]/$base_path_escaped/})
 }
 
 complete -o nospace -F _tp tp
