@@ -16,6 +16,7 @@ Furthermore, if you want bash-autocompletion, follow the below instructions:
 ## Usage
 
 ```
+
 template-generator - Template generator CLI
 
 Usage: tp [command] [arguments]
@@ -29,4 +30,12 @@ Usage:
   generate|g boilerplate [destination]    Generate boilerplate
   preview|p boilerplate                   Preview boilerplate
   edit|e boilerplate                      Edit boilerplate in editor
+
+Looks for boilerplates in the following directories (in the given order):
+  Environment variable BOILERPLATES_PATH
+  \$PWD/.boilerplates/
+  \$PWD/boilerplates/
+  ~/.boilerplates/
+  ~/boilerplates/
+
 ```
