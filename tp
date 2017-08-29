@@ -9,7 +9,7 @@ SAFER_IFS=$'\n\t'
 IFS="${SAFER_IFS}"
 
 _ME=$(basename "${0}")
-_VERSION="0.1.0"
+_VERSION="0.2.0"
 _USE_DEBUG=0
 
 # _debug()
@@ -74,23 +74,17 @@ _print_help() {
 
 template-generator - Template generator CLI
 
-Usage: ${_ME} [verb] [subject] [arguments]
+Usage: ${_ME} [command] [arguments]
 
 Options:
   -h, --help              Print this help.
   -v,--version            Print script version.
-  -d,--dest               Destination
-  -g,--global             Global config [default false]
-  -c,--config             Global config
 
-Commands:
-  l|list                  lala
-  g|generate              lala
-  p|preview               lala
-  o|open                  lala
-
-Examples:
-  ${_ME} generate README.md
+Usage:
+  list|ls|l [subdirectory]                List boilerplates
+  generate|g boilerplate [destination]    Generate boilerplate
+  preview|p boilerplate                   Preview boilerplate
+  edit|e boilerplate                      Edit boilerplate in editor
 
 HEREDOC
 }
@@ -189,7 +183,7 @@ _generate_boilerplate() {
   cp "$filepath" "$dest" -i
 }
 
-_open_boilerplate() {
+_edit_boilerplate() {
   local filepath="$1$2"
   $EDITOR "$filepath"
 }
@@ -212,8 +206,8 @@ _GENERATE_PARAM=""
 _GENERATE_ARG=""
 _GENERATE_ARG2=""
 
-_OPEN_PARAM=""
-_OPEN_ARG=""
+_EDIT_PARAM=""
+_EDIT_ARG=""
 
 _PREVIEW_PARAM=""
 _PREVIEW_ARG=""
@@ -263,10 +257,10 @@ do
       _require_argument "${__option}" "${__maybe_param}"
       _PREVIEW_ARG="${__maybe_param}";
       ;;
-    o|open)
-      _OPEN_PARAM=1;
+    e|edit)
+      _EDIT_PARAM=1;
       _require_argument "${__option}" "${__maybe_param}"
-      _OPEN_ARG="${__maybe_param}";
+      _EDIT_ARG="${__maybe_param}";
       ;;
     --endopts)
       break
@@ -291,8 +285,8 @@ _main() {
     _list_boilerplates "$boilerplates_path" "$_LIST_ARG"
   elif ((_GENERATE_PARAM)); then
     _generate_boilerplate "$boilerplates_path" "$_GENERATE_ARG" "$_GENERATE_ARG2"
-  elif ((_OPEN_PARAM)); then
-    _open_boilerplate "$boilerplates_path" "$_OPEN_ARG"
+  elif ((_EDIT_PARAM)); then
+    _edit_boilerplate "$boilerplates_path" "$_EDIT_ARG"
   elif ((_PREVIEW_PARAM)); then
     _preview_boilerplate "$boilerplates_path" "$_PREVIEW_ARG"
   else
