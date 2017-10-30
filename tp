@@ -157,8 +157,6 @@ _get_boilerplates_path() {
   echo "$path"
 }
 
-# TODO:
-# Allow user to pass in tree options
 # Add dest to list
 # @param {String} filepath
 # @param {String} directory
