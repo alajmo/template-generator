@@ -9,7 +9,7 @@ SAFER_IFS=$'\n\t'
 IFS="${SAFER_IFS}"
 
 _ME=$(basename "${0}")
-_VERSION="0.3.0"
+_VERSION="0.4.0"
 _USE_DEBUG=0
 
 # _debug()
@@ -163,7 +163,12 @@ _get_boilerplates_path() {
 _list_boilerplates() {
   local filepath=$1
   local directory="${2:-}"
+  local level="${3:-}"
   local boilerplates_path
+
+  if [[ -z $level ]]; then
+    level=9999
+  fi
 
   if [[ -z $directory ]]; then
     boilerplates_path="$filepath"
@@ -171,7 +176,7 @@ _list_boilerplates() {
     boilerplates_path="$filepath$directory"
   fi
 
-  tree "$boilerplates_path" -a -I "*.git*"
+  tree "$boilerplates_path" -L "$level" -a -I "*.git*"
 }
 
 # @param boilerplates_path
@@ -204,6 +209,9 @@ _USE_DEBUG=0
 
 # Options
 _VERSION_PARAM=""
+
+_LEVEL_ARG=""
+
 _LIST_PARAM=""
 _LIST_ARG=""
 
@@ -267,6 +275,9 @@ do
       _require_argument "${__option}" "${__maybe_param}"
       _EDIT_ARG="${__maybe_param}";
       ;;
+    -L|--level)
+      _LEVEL_ARG="${__maybe_param}";
+      ;;
     --endopts)
       break
       ;;
@@ -295,8 +306,7 @@ _main() {
   elif ((_PREVIEW_PARAM)); then
     _preview_boilerplate "$boilerplates_path" "$_PREVIEW_ARG"
   else
-    _list_boilerplates "$boilerplates_path"
-    _LIST_PARAM=""
+    _list_boilerplates "$boilerplates_path" "" "$_LEVEL_ARG"
   fi
 }
 
