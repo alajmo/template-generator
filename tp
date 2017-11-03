@@ -307,7 +307,6 @@ _main() {
     _preview_boilerplate "$boilerplates_path" "$_PREVIEW_ARG"
   else
     _list_boilerplates "$boilerplates_path" "" "$_LEVEL_ARG"
-    _LIST_PARAM=""
   fi
 }
 
