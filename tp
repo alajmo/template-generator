@@ -9,7 +9,7 @@ SAFER_IFS=$'\n\t'
 IFS="${SAFER_IFS}"
 
 _ME=$(basename "${0}")
-_VERSION="0.3.0"
+_VERSION="0.4.0"
 _USE_DEBUG=0
 
 # _debug()
