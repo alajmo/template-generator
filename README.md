@@ -8,10 +8,10 @@ A simple bash script used to generate boilerplates.
 
 1. Put the file [tp](tp) in an executable path.
 
-Furthermore, if you want bash-autocompletion, follow the below instructions:
+Furthermore, if you want bash-autocompletion:
 
-1. [Install boilerplates-completion](https://github.com/scop/bash-completion)
-2. Source [bash-completion.sh](bash-completion.sh) from `~/.bash_completion`
+1. [Install boilerplates-completion](https://github.com/scop/bash-completion).
+2. Source [bash-completion.sh](bash-completion.sh) from `~/.bash_completion`.
 
 ## Usage
 
@@ -22,18 +22,28 @@ Usage: tp [command] [arguments]
 
 Options:
   -h, --help              Print this help.
-  -v,--version            Print script version.
+  -v, --version            Print script version.
+  -L, --level              Max display depth of the directory tree.
 
-Usage:
-  list|ls|l [subdirectory]                List boilerplates
-  generate|g boilerplate [destination]    Generate boilerplate
-  preview|p boilerplate                   Preview boilerplate
-  edit|e boilerplate                      Edit boilerplate in editor
+Commands:
+  list|ls|l [subdirectory]                List boilerplates.
+  generate|g [boilerplate] [destination]  Generate boilerplate.
+  preview|p [boilerplate]                 Preview boilerplate.
+  edit|e [boilerplate]                    Edit boilerplate in editor.
 
-Looks for boilerplates in the following directories (in the given order):
-  Environment variable BOILERPLATES_PATH
-  $PWD/.boilerplates/
-  $PWD/boilerplates/
-  ~/.boilerplates/
-  ~/boilerplates/
+Examples:
+  # Show first depth level of boilerplates path.
+  $ tp ls -L 1
+
+  # Copy boilerplate file.txt to current directory with filename new-file.txt
+  $ tp generate files/file.txt new-file.txt
+
+Boilerplate Path:
+  Looks for boilerplates in the following directories (in the given order):
+    Environment variable BOILERPLATES_PATH
+    $PWD/.boilerplates/
+    $PWD/boilerplates/
+    ~/.boilerplates/
+    ~/boilerplates/
+    ~/boilerplates/
 ```
