@@ -78,20 +78,29 @@ Usage: ${_ME} [command] [arguments]
 
 Options:
   -h, --help              Print this help.
-  -v,--version            Print script version.
+  -v, --version            Print script version.
+  -L, --level              Max display depth of the directory tree.
 
-Usage:
-  list|ls|l [subdirectory]                List boilerplates
-  generate|g [boilerplate] [destination]  Generate boilerplate
-  preview|p [boilerplate]                 Preview boilerplate
-  edit|e [boilerplate]                    Edit boilerplate in editor
+Commands:
+  list|ls|l [subdirectory]                List boilerplates.
+  generate|g [boilerplate] [destination]  Generate boilerplate.
+  preview|p [boilerplate]                 Preview boilerplate.
+  edit|e [boilerplate]                    Edit boilerplate in editor.
 
-Looks for boilerplates in the following directories (in the given order):
-  Environment variable BOILERPLATES_PATH
-  \$PWD/.boilerplates/
-  \$PWD/boilerplates/
-  ~/.boilerplates/
-  ~/boilerplates/
+Examples:
+  # Show first depth level of boilerplates path.
+  $ tp ls -L 1
+
+  # Copy boilerplate file.txt to current directory with filename new-file.txt
+  $ tp generate files/file.txt new-file.txt
+
+Boilerplate Path:
+  Looks for boilerplates in the following directories (in the given order):
+    Environment variable BOILERPLATES_PATH
+    \$PWD/.boilerplates/
+    \$PWD/boilerplates/
+    ~/.boilerplates/
+    ~/boilerplates/
 
 HEREDOC
 }
@@ -179,6 +188,11 @@ _list_boilerplates() {
   tree "$boilerplates_path" -L "$level" -a -I "*.git*"
 }
 
+# @param filepath
+_substitute_variables() {
+  local filepath="$1"
+}
+
 # @param boilerplates_path
 # @param boilerplate
 # @param dest
@@ -191,6 +205,19 @@ _generate_boilerplate() {
   fi
 
   cp "$filepath" "$dest" -ir
+
+  local file
+  file=$(basename "$filepath")
+  echo "$file"
+
+  local file2
+  file2=$(basename "$dest")
+  echo "$file2"
+
+  # filename if $dest specified
+  # . if $dest not specified
+
+  _substitute_variables "$filepath"
 }
 
 _edit_boilerplate() {
