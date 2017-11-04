@@ -30,21 +30,11 @@ _generate_tests() {
   assert_end "generate tests"
 }
 
-# LIST
-# list=$(. ./tp list)
-# echo $list
-# assert "echo $list" "1"
-
-# assert_end LIST
-
-# export BOILERPLATES_PATH="$PWD/tests/boilerplates"
-
 _main() {
   _pre_test
 
   _generate_tests
 
   _cleanup
-
 }
 _main "${@:-}"
