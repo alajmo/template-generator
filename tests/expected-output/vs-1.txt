@@ -1,0 +1,4 @@
+This is a variable substition test
+Variable 1 is equal to Hello
+World is variable 2
+
