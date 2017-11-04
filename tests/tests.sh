@@ -1,26 +1,28 @@
 #!/bin/bash
 
-set -eu
-source tests/assert.sh # Format: assert <command> [stdout] [stdin]
+set -e
 
 TEST_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-BOILERPLATES_PATH="$PWD/tests/boilerplates/"
-ACTUAL_OUTPUT="$TEST_DIR/temp"
-EXPECTED_OUT="$TEST_DIR/expected-output"
+BOILERPLATES_PATH="$TEST_DIR/boilerplates/"
+ACTUAL_OUTPUT_DIR="$TEST_DIR/actual-output"
+EXPECTED_OUTPUT_DIR="$TEST_DIR/expected-output"
+
+source "$TEST_DIR/assert.sh" # Format: assert <command> [stdout] [stdin]
 
 _pre_test() {
   export BOILERPLATES_PATH="$BOILERPLATES_PATH"
-  mkdir -p "$ACTUAL_OUTPUT"
+  mkdir -p "$ACTUAL_OUTPUT_DIR"
 }
 _post_test() {
   export BOILERPLATES_PATH=""
-  rm "$ACTUAL_OUTPUT" -irf
+  rm "$ACTUAL_OUTPUT_DIR" -irf
 }
 
 _generate_tests() {
-  . ./tp generate "g-1.txt" "$OUTPUT"
-  # diff
-  # assert "echo $list" "1"
+  . ./tp generate "g-1.txt" "$ACTUAL_OUTPUT_DIR"
+
+  assert "diff \"$ACTUAL_OUTPUT_DIR/g-1.txt\" \"$EXPECTED_OUTPUT_DIR/g-1.txt\"" "" "Should generate boilerplate"
+  assert_end "generate tests"
 }
 
 # LIST
