@@ -95,7 +95,8 @@ Examples:
   $ tp generate files/file.txt new-file.txt
 
 Boilerplate Path:
-  Looks for boilerplates in the following directories (in the given order):
+
+  The order of precedence (highest to lowest) is:
     Environment variable BOILERPLATES_PATH
     \$PWD/.boilerplates/
     \$PWD/boilerplates/
