@@ -80,7 +80,7 @@ Options:
   -h, --help              Print this help.
   -v,--version            Print script version.
 
-Usage:
+Commands:
   list|ls|l [subdirectory]                List boilerplates
   generate|g <boilerplate> [destination]  Generate boilerplate
   preview|p <boilerplate>                 Preview boilerplate
