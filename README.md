@@ -17,34 +17,27 @@ Furthermore, if you want bash-autocompletion:
 ## Usage
 
 ```
+
 template-generator - Template generator CLI
 
-Usage: tp [command] [options]
+Usage: tp [command] [arguments] [options]
 
 Options:
   -h, --help              Print this help.
-  -v, --version           Print script version.
-  -L, --level             Max display depth of the directory tree.
+  -v,--version            Print script version.
 
-Commands:
-  list|ls|l [subdirectory]                List boilerplates.
-  generate|g [boilerplate] [destination]  Generate boilerplate.
-  preview|p [boilerplate]                 Preview boilerplate.
-  edit|e [boilerplate]                    Edit boilerplate in editor.
+Usage:
+  list|ls|l [subdirectory]                List boilerplates
+  generate|g <boilerplate> [destination]  Generate boilerplate
+  preview|p <boilerplate>                 Preview boilerplate
+  edit|e <boilerplate>                    Edit boilerplate in editor
 
-Examples:
-  # Show first depth level of boilerplates path.
-  $ tp ls -L 1
+Looks for boilerplates in the following directories (in the given order):
+  Environment variable BOILERPLATES_PATH
+  $PWD/.boilerplates/
+  $PWD/boilerplates/
+  ~/.boilerplates/
+  ~/boilerplates/
 
-  # Copy boilerplate file.txt to current directory with filename new-file.txt
-  $ tp generate files/file.txt new-file.txt
 
-Boilerplate Path:
-  Looks for boilerplates in the following directories (in the given order):
-    Environment variable BOILERPLATES_PATH
-    $PWD/.boilerplates/
-    $PWD/boilerplates/
-    ~/.boilerplates/
-    ~/boilerplates/
-    ~/boilerplates/
 ```
