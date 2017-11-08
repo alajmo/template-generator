@@ -74,7 +74,7 @@ _print_help() {
 
 template-generator - Template generator CLI
 
-Usage: ${_ME} [command] [arguments]
+Usage: ${_ME} [command] [options]
 
 Options:
   -h, --help              Print this help.
