@@ -78,8 +78,8 @@ Usage: ${_ME} [command] [arguments]
 
 Options:
   -h, --help              Print this help.
-  -v, --version            Print script version.
-  -L, --level              Max display depth of the directory tree.
+  -v, --version           Print script version.
+  -L, --level             Max display depth of the directory tree.
 
 Commands:
   list|ls|l [subdirectory]                List boilerplates.

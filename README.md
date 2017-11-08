@@ -2,11 +2,12 @@
 
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
-A simple bash script used to generate boilerplates.
+A simple bash script used to manage boilerplates.
 
 ## Install
 
 1. Put the file [tp](tp) in an executable path.
+2. Create a directory named boilerplates in your home folder.
 
 Furthermore, if you want bash-autocompletion:
 
@@ -22,8 +23,8 @@ Usage: tp [command] [arguments]
 
 Options:
   -h, --help              Print this help.
-  -v, --version            Print script version.
-  -L, --level              Max display depth of the directory tree.
+  -v, --version           Print script version.
+  -L, --level             Max display depth of the directory tree.
 
 Commands:
   list|ls|l [subdirectory]                List boilerplates.
