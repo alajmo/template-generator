@@ -39,5 +39,4 @@ Looks for boilerplates in the following directories (in the given order):
   ~/.boilerplates/
   ~/boilerplates/
 
-
 ```
