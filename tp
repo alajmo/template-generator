@@ -153,8 +153,6 @@ _get_boilerplates_path() {
   elif [[ -d "$HOME/boilerplates/" ]]; then
     path="$HOME/boilerplates/"
   fi
-
-  echo "$path"
 }
 
 # Add dest to list
