@@ -41,8 +41,8 @@ _simulate_report() {
     sleep 2s
     ls
 
-    sleep 4s
-    echo ""
+    sleep 2s
+    printf ""
   '
 
   # Simulate typing
@@ -52,7 +52,7 @@ _simulate_report() {
 
 _generate_gif() {
   # Convert to gif
-  docker run --rm -v "$PWD":/data asciinema/asciicast2gif -h 30 media/output.json media/output.gif
+  docker run --rm -v "$PWD":/data asciinema/asciicast2gif -h 27 media/output.json media/output.gif
 }
 
 _generate_png() {
@@ -73,7 +73,7 @@ _cleanup() {
 _main() {
   _init
   _simulate_report
-  # _generate_gif
+  _generate_gif
   # generate_png
   _cleanup
 }

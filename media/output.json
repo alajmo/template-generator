@@ -1,91 +1,115 @@
 {
+  "height": 46,
+  "width": 158,
+  "duration": 17.579543,
+  "command": "\n    clear\n    export PS1=\"-> \"\n\n    export BOILERPLATES_PATH=$PWD/tests/boilerplates/\n\n    sleep 2s\n    echo \"# list all boilerplats\"\n    sleep 1s\n    echo \"tp l\" | pv -qL 10\n    sleep 2s\n    tp l\n    echo \"\\n\"\n\n    sleep 2s\n    echo \"# preview file\"\n    echo \"$ tp p examples/test-2.txt\" | pv -qL 30\n    sleep 2s\n    tp p examples/test-2.txt\n    echo \"\\n\"\n\n    sleep 2s\n    echo \"# generate file\"\n    echo \"$ tp g examples/test-2.txt\" | pv -qL 30\n    tp generate examples/test-2.txt\n    echo \"\\n\"\n\n    # file now available in current directory\n    echo \"$ ls\" | pv -qL 10\n    sleep 2s\n    ls\n\n    sleep 2s\n    printf \"\"\n  ",
   "env": {
     "TERM": "xterm-256color",
     "SHELL": "/bin/bash"
   },
-  "height": 92,
-  "version": 1,
-  "command": "\n    clear\n    export PS1=\"-> \"\n\n    export BOILERPLATES_PATH=$PWD/tests/boilerplates/\n\n    sleep 2s\n    echo \"# list all boilerplats\"\n    sleep 1s\n    echo \"tp l\" | pv -qL 10\n    sleep 2s\n    tp l\n    echo \"\\n\"\n\n    sleep 2s\n    echo \"# preview file\"\n    echo \"$ tp p examples/test-2.txt\" | pv -qL 30\n    sleep 2s\n    tp p examples/test-2.txt\n    echo \"\\n\"\n\n    sleep 2s\n    echo \"# generate file\"\n    echo \"$ tp g examples/test-2.txt\" | pv -qL 30\n    tp generate examples/test-2.txt\n    echo \"\\n\"\n\n    # file now available in current directory\n    echo \"$ ls\" | pv -qL 10\n    sleep 2s\n    ls\n\n    sleep 4s\n    echo \"\"\n  ",
-  "duration": 19.56643,
   "stdout": [
     [
-      0.004293,
+      0.005265,
       "\u001b[3;J\u001b[H\u001b[2J"
     ],
     [
-      2.000879,
+      2.00126,
       "# list all boilerplats\r\n"
     ],
     [
-      1.001656,
+      1.002981,
       "t"
     ],
     [
-      0.180278,
+      0.180508,
       "p"
     ],
     [
-      0.090287,
+      0.090234,
       " "
     ],
     [
-      0.09013,
+      0.090258,
       "l"
     ],
     [
-      0.090189,
+      0.090076,
       "\r\n"
     ],
     [
-      2.005806,
-      "/home/samir/Projects/programming/template-generator/tests/boilerplates/\r\n├── examples\r\n│   └── test-2.txt\r\n└── test.txt\r\n\r\n1 directory, 2 files\r\n"
+      2.019459,
+      "/home/samir/Projects/programming/template-generator/tests/boilerplates/\r\n"
     ],
     [
-      0.000304,
-      "\r\n\r\n"
+      0.00057,
+      "├── examples"
     ],
     [
-      2.001513,
+      0.000185,
+      "\r\n"
+    ],
+    [
+      0.000107,
+      "│   └── test-2.txt"
+    ],
+    [
+      6.7e-05,
+      "\r\n"
+    ],
+    [
+      5.3e-05,
+      "└── test.txt\r\n\r\n1 directory, 2 files\r\n"
+    ],
+    [
+      0.0006,
+      "\r\n"
+    ],
+    [
+      2.9e-05,
+      "\r\n"
+    ],
+    [
+      2.001249,
       "# preview file\r\n"
     ],
     [
-      0.00247,
+      0.000925,
       "$ t"
     ],
     [
-      0.180321,
+      0.180387,
       "p p"
     ],
     [
-      0.090268,
+      0.090488,
       " ex"
     ],
     [
-      0.090202,
+      0.089944,
       "amp"
     ],
     [
-      0.090193,
+      0.090189,
       "les"
     ],
     [
-      0.090141,
+      0.090117,
       "/te"
     ],
     [
-      0.090124,
+      0.090238,
       "st-"
     ],
     [
-      0.090077,
+      0.090072,
       "2.t"
     ],
     [
-      0.090152,
+      0.090087,
       "xt\r\n"
     ],
     [
-      2.008963,
+      2.00679,
       "foo bar\r\n"
     ],
     [
@@ -93,86 +117,74 @@
       "\r\n\r\n"
     ],
     [
-      2.00095,
+      2.001392,
       "# generate file\r\n"
     ],
     [
-      0.000934,
+      0.000874,
       "$ t"
     ],
     [
-      0.18037,
+      0.180447,
       "p g"
     ],
     [
-      0.090426,
+      0.090064,
       " ex"
     ],
     [
-      0.090024,
+      0.090219,
       "amp"
     ],
     [
-      0.0902,
+      0.090083,
       "les"
     ],
     [
-      0.090198,
+      0.090197,
       "/te"
     ],
     [
-      0.09023,
+      0.0902,
       "st-"
     ],
     [
-      0.090219,
+      0.090138,
       "2.t"
     ],
     [
-      0.090106,
+      0.090324,
       "xt\r\n"
     ],
     [
-      0.006142,
-      "test-2.txt\r\n"
-    ],
-    [
-      0.001776,
-      ".\r\n"
-    ],
-    [
-      0.000257,
+      0.00834,
       "\r\n\r\n"
     ],
     [
-      0.000619,
+      0.000629,
       "$"
     ],
     [
-      0.180429,
+      0.18041,
       " "
     ],
     [
-      0.090237,
+      0.090264,
       "l"
     ],
     [
-      0.090203,
+      0.090094,
       "s"
     ],
     [
-      0.090212,
+      0.090193,
       "\r\n"
     ],
     [
-      2.002874,
-      "CHANGELOG.md  DOCUMENTATION.md\tLICENSE  README.md  bash-completion.sh\tmedia  scripts\ttest-2.txt  tests  tp\r\n"
-    ],
-    [
-      4.001401,
-      "\r\n"
+      2.00225,
+      "CHANGELOG.md  DOCUMENTATION.md\tLICENSE  README.md  bash-completion.sh\tmedia  progress-bar.sh\tscripts  test-2.txt  tests  tp\r\n"
     ]
   ],
   "title": "tap-report",
-  "width": 158
+  "version": 1
 }
