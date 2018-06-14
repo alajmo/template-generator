@@ -18,31 +18,31 @@ _simulate_report() {
     sleep 2s
     echo "# list all boilerplats"
     sleep 1s
-    echo "tp l" | pv -qL 10
+    echo "$ tp list" | pv -qL 10
     sleep 2s
-    tp l
+    tp list
     echo "\n"
 
     sleep 2s
     echo "# preview file"
-    echo "$ tp p examples/test-2.txt" | pv -qL 30
+    echo "$ tp preview examples/test-2.txt" | pv -qL 30
     sleep 2s
-    tp p examples/test-2.txt
+    tp preview examples/test-2.txt
     echo "\n"
 
     sleep 2s
     echo "# generate file"
-    echo "$ tp g examples/test-2.txt" | pv -qL 30
+    echo "$ tp generate examples/test-2.txt" | pv -qL 30
     tp generate examples/test-2.txt
     echo "\n"
 
     # file now available in current directory
-    echo "$ ls" | pv -qL 10
-    sleep 2s
-    ls
+    echo "$ ls -A" | pv -qL 10
+    sleep 1s
+    ls -A | grep "test-2.txt\|$" --color
 
-    sleep 2s
-    printf ""
+    sleep 4s
+    echo " "
   '
 
   # Simulate typing
@@ -52,7 +52,7 @@ _simulate_report() {
 
 _generate_gif() {
   # Convert to gif
-  docker run --rm -v "$PWD":/data asciinema/asciicast2gif -h 27 media/output.json media/output.gif
+  docker run --rm -v "$PWD":/data asciinema/asciicast2gif -h 30 media/output.json media/output.gif
 }
 
 _generate_png() {
