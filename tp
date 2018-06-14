@@ -9,7 +9,7 @@ SAFER_IFS=$'\n\t'
 IFS="${SAFER_IFS}"
 
 _ME=$(basename "${0}")
-_VERSION="0.4.0"
+_VERSION="0.5.0"
 _USE_DEBUG=0
 
 # _debug()
@@ -80,6 +80,7 @@ Options:
   -h, --help              Print this help.
   -v, --version           Print script version.
   -L, --level             Max display depth of the directory tree.
+  -r, --raw               Print list instead of tree with absolute paths. absolute names.
 
 Commands:
   list|ls|l [subdirectory]                List boilerplates.
@@ -174,6 +175,7 @@ _list_boilerplates() {
   local filepath=$1
   local directory="${2:-}"
   local level="${3:-}"
+  local raw="${4:-}"
   local boilerplates_path
 
   if [[ -z $level ]]; then
@@ -186,7 +188,11 @@ _list_boilerplates() {
     boilerplates_path="$filepath$directory"
   fi
 
-  tree "$boilerplates_path" -L "$level" -a -I "*.git*"
+  if [[ $raw == 1 ]]; then
+    find $boilerplates_path
+  else
+    tree "$boilerplates_path" -L "$level" -a -I "*.git*"
+  fi
 }
 
 # @param filepath
@@ -234,6 +240,9 @@ _USE_DEBUG=0
 _VERSION_PARAM=""
 
 _LEVEL_ARG=""
+
+_RAW_PARAM=""
+_RAW_ARG=""
 
 _LIST_PARAM=""
 _LIST_ARG=""
@@ -301,6 +310,10 @@ do
     -L|--level)
       _LEVEL_ARG="${__maybe_param}";
       ;;
+    -r|--raw)
+      _RAW_PARAM=1;
+      _RAW_ARG="${__maybe_param}";
+      ;;
     --endopts)
       break
       ;;
@@ -321,7 +334,7 @@ _main() {
   elif ((_VERSION_PARAM)); then
     _print_version
   elif ((_LIST_PARAM)); then
-    _list_boilerplates "$boilerplates_path" "$_LIST_ARG"
+    _list_boilerplates "$boilerplates_path" "" "$_LIST_ARG" "$_RAW_PARAM"
   elif ((_GENERATE_PARAM)); then
     _generate_boilerplate "$boilerplates_path" "$_GENERATE_ARG" "$_GENERATE_ARG2"
   elif ((_EDIT_PARAM)); then
@@ -329,7 +342,7 @@ _main() {
   elif ((_PREVIEW_PARAM)); then
     _preview_boilerplate "$boilerplates_path" "$_PREVIEW_ARG"
   else
-    _list_boilerplates "$boilerplates_path" "" "$_LEVEL_ARG"
+    _list_boilerplates "$boilerplates_path" "" "$_LEVEL_ARG" "$_RAW_PARAM"
   fi
 }
 
