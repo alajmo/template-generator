@@ -18,6 +18,7 @@ _get_boilerplates_path() {
         path="$HOME/boilerplates/"
     fi
 
+    path="$(realpath $path)/"
     echo "$path"
 }
 

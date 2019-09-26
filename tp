@@ -9,7 +9,7 @@ SAFER_IFS=$'\n\t'
 IFS="${SAFER_IFS}"
 
 _ME=$(basename "${0}")
-_VERSION="0.5.0"
+_VERSION="0.6.0"
 _USE_DEBUG=0
 
 # _debug()
@@ -77,10 +77,11 @@ template-generator - Template generator CLI
 Usage: ${_ME} [command] [arguments]
 
 Options:
-  -h, --help              Print this help.
-  -v, --version           Print script version.
-  -L, --level             Max display depth of the directory tree.
-  -r, --raw               Print list instead of tree with absolute paths. absolute names.
+  -h, --help                       Print this help
+  -v, --version                    Print script version
+  -L, --level                      Max display depth of the directory tree
+  -b, --boilerplate-path <path>    Specify boilerplate path
+  -f, --format <tree|line>         List format [default: tree]
 
 Commands:
   list|ls|l [subdirectory]                List boilerplates.
@@ -98,11 +99,12 @@ Examples:
 Boilerplate Path:
 
   The order of precedence (highest to lowest) is:
-    Environment variable BOILERPLATES_PATH
-    \$PWD/.boilerplates/
-    \$PWD/boilerplates/
-    ~/.boilerplates/
-    ~/boilerplates/
+    1. Path specified in options
+    2. Environment variable BOILERPLATES_PATH
+    3. \$PWD/.boilerplates/
+    4. \$PWD/boilerplates/
+    5. ~/.boilerplates/
+    6. ~/boilerplates/
 
 HEREDOC
 }
@@ -150,10 +152,13 @@ set -- "${options[@]:-}"
 unset options
 
 _get_boilerplates_path() {
-  local path
+  local boilerplatePathConfig="$1"
   local env_path=${BOILERPLATES_PATH:-""}
 
-  if [[ -n "$env_path" ]]; then
+  local path
+  if [[ -n "$boilerplatePathConfig" ]]; then
+    path="$boilerplatePathConfig"
+  elif [[ -n "$env_path" ]]; then
     path="$env_path"
   elif [[ -d "$PWD/.boilerplates/" ]]; then
     path="$PWD/.boilerplates/"
@@ -169,57 +174,89 @@ _get_boilerplates_path() {
 }
 
 # Add dest to list
-# @param {String} filepath
-# @param {String} directory
+# @param {String} Boilerplates path
+# @param {String} Sub directory
+# @param {String} List format
+# @param {String} Tree level
+# _list_boilerplates "$boilerplates_path" "" "$_LIST_ARG" "$_LIST_OPTION"
 _list_boilerplates() {
-  local filepath=$1
+  local root_boilerplates_path="$1"
   local directory="${2:-}"
-  local level="${3:-}"
-  local raw="${4:-}"
-  local boilerplates_path
+  local list_format="${3:-}"
+  local tree_level="${4:-}"
+  local path="$(realpath "$root_boilerplates_path/$directory")"
 
-  if [[ -z $level ]]; then
-    level=9999
-  fi
+  [[ -z $list_format ]] && list_format="tree";
+  [[ -z $tree_level ]] && tree_level=9999;
 
-  if [[ -z $directory ]]; then
-    boilerplates_path="$filepath"
+  if [[ $list_format == "line" ]]; then
+    find $path -type f
   else
-    boilerplates_path="$filepath$directory"
-  fi
-
-  if [[ $raw == 1 ]]; then
-    find $boilerplates_path
-  else
-    tree "$boilerplates_path" -L "$level" -a -I "*.git*"
+    tree "$path" -L "$tree_level" -a -I "*.git*"
   fi
 }
 
-# @param filepath
-_substitute_variables() {
-  local filepath="$1"
+# Trim spaces
+# @param {String} string
+trim_string() {
+    : "${1#"${1%%[![:space:]]*}"}"
+    : "${_%"${_##*[![:space:]]}"}"
+    printf '%s\n' "$_"
 }
 
+# Replace placeholder in files with their variable
+# @param {String} files
+# @param {String} directory
+template_engine() {
+    # 1. Find placeholders
+    local filesArr=($1)
+    local content=""
+    for file in "${filesArr[@]}"; do
+        content+=$(cat "$file")
+    done
+
+    local find_pattern="(?<={{)(\s*[\w\d\.\_\-]*\s*)(?=}})"
+    local variables=($(printf "$content" | grep -oP "$find_pattern" | awk '!x[$0]++'))
+
+    # 2. Set values for all placeholders
+    declare -A arr
+    for key in "${variables[@]}"; do
+        key=$(trim_string "$key")
+        read -rp "${key}: " arr[$key] </dev/tty
+    done
+
+    # 3. Replace placeholders with user values
+    while read -r file; do
+        for key in "${!arr[@]}"; do
+            # echo "$file"
+            # echo "$key: ${arr[$key]}"
+            sed -ri "s/\{\{ $key \}\}/${arr[$key]}/g" "$file"
+        done
+    done <<< "$files"
+}
+
+# Generates boilerplates, takes single file or directory as input parameter
 # @param boilerplates_path
 # @param boilerplate
 # @param dest
 _generate_boilerplate() {
-  local filepath="$1$2"
-  local dest="${3:-}"
+  # 1. Normalize paths
+  local boilerplates_path="$1"
+  local boilerplate="$2"
+  local dest="$3"
+  local src=$(realpath "$boilerplates_path$boilerplate")
 
-  if [[ -z $dest ]]; then
-    dest="."
+  # 2. Copy files
+  if [[ -z "$dest" || "$dest" = "." || "$dest" = "./" ]];  then
+    dest=$(realpath $(basename "$src"))
+  else
+    dest=$(realpath "$dest")
   fi
+  cp "$src" "$dest" -ir
 
-  cp "$filepath" "$dest" -ir
-
-  local file
-  file=$(basename "$filepath")
-
-  local file2
-  file2=$(basename "$dest")
-
-  # _substitute_variables "$filepath"
+  # 3. Replace variables
+  local files=$(find "$dest" -type f)
+  template_engine "$files"
 }
 
 _edit_boilerplate() {
@@ -233,28 +270,37 @@ _preview_boilerplate() {
 }
 
 # Program option parameters.
-_PRINT_PARAM=0
+_PRINT_OPTION=0
 _USE_DEBUG=0
 
 # Options
-_VERSION_PARAM=""
+_VERSION_OPTION=0
 
-_LEVEL_ARG=""
+# Boilerplate
+_BOILERPLATE_PATH_OPTION=0
+_BOILERPLATE_PATH_ARG=""
 
-_RAW_PARAM=""
-_RAW_ARG=""
-
-_LIST_PARAM=""
+# List
+_LIST_OPTION=0
 _LIST_ARG=""
 
-_GENERATE_PARAM=""
+_LIST_FORMAT_OPTION=0
+_LIST_FORMAT_ARG="tree"
+
+_TREE_LEVEL_OPTION=0
+_TREE_LEVEL_ARG=9999
+
+# Generate
+_GENERATE_OPTION=0
 _GENERATE_ARG=""
 _GENERATE_ARG2=""
 
-_EDIT_PARAM=""
+# Edit
+_EDIT_OPTION=0
 _EDIT_ARG=""
 
-_PREVIEW_PARAM=""
+# Preview
+_PREVIEW_OPTION=0
 _PREVIEW_ARG=""
 
 # Usage:
@@ -279,40 +325,48 @@ do
   __maybe_param2="${3:-}"
   case "${__option}" in
     -h|--help)
-      _PRINT_PARAM=1
+      _PRINT_OPTION=1
       ;;
     -v|--version)
-      _VERSION_PARAM=1;
+      _VERSION_OPTION=1;
       ;;
     --debug)
       _USE_DEBUG=1
       ;;
     l|ls|list)
-      _LIST_PARAM=1;
+      _LIST_OPTION=1;
       _LIST_ARG="${__maybe_param}";
       ;;
     g|generate)
-      _GENERATE_PARAM=1;
+      _GENERATE_OPTION=1;
       _require_argument "${__option}" "${__maybe_param}"
       _GENERATE_ARG="${__maybe_param}";
       _GENERATE_ARG2="${__maybe_param2}";
       ;;
     p|preview)
-      _PREVIEW_PARAM=1;
+      _PREVIEW_OPTION=1;
       _require_argument "${__option}" "${__maybe_param}"
       _PREVIEW_ARG="${__maybe_param}";
       ;;
     e|edit)
-      _EDIT_PARAM=1;
+      _EDIT_OPTION=1;
       _require_argument "${__option}" "${__maybe_param}"
       _EDIT_ARG="${__maybe_param}";
       ;;
-    -L|--level)
-      _LEVEL_ARG="${__maybe_param}";
+    -b|--boilerplate-path)
+      _BOILERPLATE_PATH_OPTION=1;
+      _require_argument "${__option}" "${__maybe_param}"
+      _BOILERPLATE_PATH_ARG="${__maybe_param}";
       ;;
-    -r|--raw)
-      _RAW_PARAM=1;
-      _RAW_ARG="${__maybe_param}";
+    -L|--level)
+      _TREE_LEVEL_OPTION=1;
+      _require_argument "${__option}" "${__maybe_param}"
+      _TREE_LEVEL_ARG="${__maybe_param}";
+      ;;
+    -f|--format)
+      _LIST_FORMAT_OPTION=1;
+      _require_argument "${__option}" "${__maybe_param}"
+      _LIST_FORMAT_ARG="${__maybe_param}";
       ;;
     --endopts)
       break
@@ -326,23 +380,24 @@ done
 
 _main() {
   local boilerplates_path
-  boilerplates_path=$(_get_boilerplates_path)
+  boilerplates_path=$(_get_boilerplates_path "$_BOILERPLATE_PATH_ARG")
+  boilerplates_path="$(realpath "$boilerplates_path")/"
 
-  if ((_PRINT_PARAM))
+  if ((_PRINT_OPTION))
   then
     _print_help
-  elif ((_VERSION_PARAM)); then
+  elif ((_VERSION_OPTION)); then
     _print_version
-  elif ((_LIST_PARAM)); then
-    _list_boilerplates "$boilerplates_path" "" "$_LIST_ARG" "$_RAW_PARAM"
-  elif ((_GENERATE_PARAM)); then
+  elif ((_LIST_OPTION)); then
+    _list_boilerplates "$boilerplates_path" "$_LIST_ARG" "$_LIST_FORMAT_ARG" "$_TREE_LEVEL_ARG"
+  elif ((_GENERATE_OPTION)); then
     _generate_boilerplate "$boilerplates_path" "$_GENERATE_ARG" "$_GENERATE_ARG2"
-  elif ((_EDIT_PARAM)); then
+  elif ((_EDIT_OPTION)); then
     _edit_boilerplate "$boilerplates_path" "$_EDIT_ARG"
-  elif ((_PREVIEW_PARAM)); then
+  elif ((_PREVIEW_OPTION)); then
     _preview_boilerplate "$boilerplates_path" "$_PREVIEW_ARG"
   else
-    _list_boilerplates "$boilerplates_path" "" "$_LEVEL_ARG" "$_RAW_PARAM"
+    _list_boilerplates "$boilerplates_path" "$_LIST_ARG" "$_LIST_FORMAT_ARG" "$_TREE_LEVEL_ARG"
   fi
 }
 
