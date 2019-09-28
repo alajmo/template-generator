@@ -1,4 +1,2 @@
-Hello b!  My name is {{ name }}
-My age is: {{ age }}
-His age is: {{ age }}
+Hello!
 

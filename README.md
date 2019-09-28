@@ -6,6 +6,10 @@ A simple bash script used to manage boilerplates.
 
 ![example usage of template-generator](media/output.gif)
 
+## Prerequisite
+
+- Bash 4.2 >
+
 ## Install
 
 1. Put the file [tp](tp) in an executable path.

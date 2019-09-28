@@ -9,7 +9,7 @@ SAFER_IFS=$'\n\t'
 IFS="${SAFER_IFS}"
 
 _ME=$(basename "${0}")
-_VERSION="0.6.1"
+_VERSION="0.6.2"
 _USE_DEBUG=0
 
 # _debug()
@@ -204,6 +204,18 @@ trim_string() {
     printf '%s\n' "$_"
 }
 
+# Adds a new boilerplate
+# @param boilerplates_path
+# @param src
+# @param dest
+_new_boilerplate() {
+  # 1. Normalize paths
+  local boilerplates_path="$1"
+  local boilerplate="$2"
+  local dest="$3"
+  local src=$(realpath "$boilerplates_path$boilerplate")
+}
+
 # Replace placeholder in files with their variable
 # @param {String} files
 # @param {String} directory
@@ -216,7 +228,7 @@ template_engine() {
     done
 
     local find_pattern="(?<={{)(\s*[\w\d\.\_\-]*\s*)(?=}})"
-    local variables=($(printf "$content" | grep -oP "$find_pattern" | awk '!x[$0]++'))
+    local variables=($(printf "$content" | grep -oP "$find_pattern" || true | awk '!x[$0]++'))
 
     # 2. Set values for all placeholders
     declare -A arr
@@ -295,6 +307,11 @@ _GENERATE_OPTION=0
 _GENERATE_ARG=""
 _GENERATE_ARG2=""
 
+# New
+_NEW_OPTION=0
+_NEW_ARG=""
+_NEW_ARG2=""
+
 # Edit
 _EDIT_OPTION=0
 _EDIT_ARG=""
@@ -336,6 +353,13 @@ do
     l|ls|list)
       _LIST_OPTION=1;
       _LIST_ARG="${__maybe_param}";
+      ;;
+    n|new)
+      _NEW_OPTION=1;
+      _require_argument "${__option}" "${__maybe_param}"
+      _NEW_ARG="${__maybe_param}";
+      _require_argument "${__option}" "${__maybe_param2}"
+      _NEW_ARG2="${__maybe_param2}";
       ;;
     g|generate)
       _GENERATE_OPTION=1;
@@ -390,6 +414,8 @@ _main() {
     _print_version
   elif ((_LIST_OPTION)); then
     _list_boilerplates "$boilerplates_path" "$_LIST_ARG" "$_LIST_FORMAT_ARG" "$_TREE_LEVEL_ARG"
+  elif ((_NEW_OPTION)); then
+    _new_boilerplate "$boilerplates_path" "$_ADD_ARG" "$_ADD_ARG2"
   elif ((_GENERATE_OPTION)); then
     _generate_boilerplate "$boilerplates_path" "$_GENERATE_ARG" "$_GENERATE_ARG2"
   elif ((_EDIT_OPTION)); then
