@@ -9,7 +9,7 @@ SAFER_IFS=$'\n\t'
 IFS="${SAFER_IFS}"
 
 _ME=$(basename "${0}")
-_VERSION="0.8.0"
+_VERSION="0.9.0"
 _USE_DEBUG=0
 
 # _debug()
@@ -299,8 +299,11 @@ _edit_boilerplate() {
 }
 
 _preview_boilerplate() {
-  local filepath="$1$2"
-  cat "$filepath"
+  local path="$(realpath $1$2)"
+
+  local files=($(find "$path" -type f))
+
+  cat "$files"
 }
 
 # Program option parameters.
@@ -445,10 +448,10 @@ _main() {
     _print_version
   elif ((_LIST_OPTION)); then
     _list_boilerplates "$boilerplates_path" "$_LIST_ARG" "$_LIST_FORMAT_ARG" "$_TREE_LEVEL_ARG"
-  elif ((_REMOVE_OPTION)); then
-    _remove_boilerplate "$boilerplates_path" "$_REMOVE_ARG"
   elif ((_NEW_OPTION)); then
     _new_boilerplate "$boilerplates_path" "$_NEW_ARG" "$_NEW_ARG2"
+  elif ((_REMOVE_OPTION)); then
+    _remove_boilerplate "$boilerplates_path" "$_REMOVE_ARG"
   elif ((_GENERATE_OPTION)); then
     _generate_boilerplate "$boilerplates_path" "$_GENERATE_ARG" "$_GENERATE_ARG2"
   elif ((_EDIT_OPTION)); then
