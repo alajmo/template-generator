@@ -9,7 +9,7 @@ SAFER_IFS=$'\n\t'
 IFS="${SAFER_IFS}"
 
 _ME=$(basename "${0}")
-_VERSION="0.6.0"
+_VERSION="0.6.1"
 _USE_DEBUG=0
 
 # _debug()
@@ -190,7 +190,7 @@ _list_boilerplates() {
   [[ -z $tree_level ]] && tree_level=9999;
 
   if [[ $list_format == "line" ]]; then
-    find $path -type f
+    find $path
   else
     tree "$path" -L "$tree_level" -a -I "*.git*"
   fi
@@ -402,4 +402,3 @@ _main() {
 }
 
 _main "${@:-}"
-
