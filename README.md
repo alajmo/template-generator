@@ -24,9 +24,11 @@ template-generator - Template generator CLI
 Usage: tp [command] [arguments]
 
 Options:
-  -h, --help              Print this help.
-  -v, --version           Print script version.
-  -L, --level             Max display depth of the directory tree.
+  -h, --help                       Print this help
+  -v, --version                    Print script version
+  -L, --level                      Max display depth of the directory tree
+  -b, --boilerplate-path <path>    Specify boilerplate path
+  -f, --format <tree|line>         List format [default: tree]
 
 Commands:
   list|ls|l [subdirectory]                List boilerplates.
@@ -44,10 +46,10 @@ Examples:
 Boilerplate Path:
 
   The order of precedence (highest to lowest) is:
-    Environment variable BOILERPLATES_PATH
-    $PWD/.boilerplates/
-    $PWD/boilerplates/
-    ~/.boilerplates/
-    ~/boilerplates/
+    1. Path specified in options
+    2. Environment variable BOILERPLATES_PATH
+    3. $PWD/.boilerplates/
+    4. $PWD/boilerplates/
+    5. ~/.boilerplates/
+    6. ~/boilerplates/
 ```
-

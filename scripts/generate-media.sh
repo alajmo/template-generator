@@ -46,7 +46,7 @@ _simulate_report() {
   '
 
   # Simulate typing
-  asciinema rec -c "$CMD" --max-wait 100 --title tap-report --quiet media/output.json &
+  asciinema rec -c "$CMD" --title tap-report --quiet media/output.json &
   fg %1
 }
 
