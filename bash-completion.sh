@@ -22,16 +22,20 @@ _get_boilerplates_path() {
     echo "$path"
 }
 
+## tp [tab] => tp [commands] -> tp n|g|l|p|e
+## tp n[tab] => tp new [tab-> $PWD] [tab-> $BOILERPLATE_PATH]
+## tp g[tab] => tp generate [tab-> $BOILERPLATES_PATH] [tab-> $PWD]
+## tp l[tab] => tp l [tab-> $BOILERPLATES_PATH]
+## tp p[tab] => tp preview [tab-> $BOILERPLATES_PATH]
+## tp e[tab] => tp edit [tab-> $BOILERPLATES_PATH]
+
 # File completion
 _tp() {
     local cur;
     _get_comp_words_by_ref cur;
 
-    local base_path;
-    base_path=$(_get_boilerplates_path)
-
-    local base_path_escaped;
-    base_path_escaped=${base_path//\//\\\/}
+    local base_path=$(_get_boilerplates_path)
+    local base_path_escaped=${base_path//\//\\\/}
 
     # 4rd argument requires seperate tab-completion.
     local prev
@@ -62,4 +66,3 @@ _tp() {
 }
 
 complete -o nospace -F _tp tp
-
