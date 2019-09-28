@@ -9,7 +9,7 @@ SAFER_IFS=$'\n\t'
 IFS="${SAFER_IFS}"
 
 _ME=$(basename "${0}")
-_VERSION="0.9.0"
+_VERSION="0.9.1"
 _USE_DEBUG=0
 
 # _debug()
@@ -84,10 +84,12 @@ Options:
   -f, --format <tree|line>         List format [default: tree]
 
 Commands:
-  list|ls|l [subdirectory]                List boilerplates.
-  generate|g [boilerplate] [destination]  Generate boilerplate.
-  preview|p [boilerplate]                 Preview boilerplate.
-  edit|e [boilerplate]                    Edit boilerplate in editor.
+  list|ls|l [subdirectory]         List boilerplates.
+  generate|g [boilerplate] [dest]  Generate boilerplate.
+  preview|p [boilerplate]          Preview boilerplate.
+  edit|e [boilerplate]             Edit boilerplate in editor.
+  remove|rm|r [boilerplate]        Remove a boilerplate.
+  new|n [file] [dest]              Add a new boilerplate.
 
 Examples:
   # Show first depth level of boilerplates path.
