@@ -9,7 +9,7 @@ SAFER_IFS=$'\n\t'
 IFS="${SAFER_IFS}"
 
 _ME=$(basename "${0}")
-_VERSION="0.6.2"
+_VERSION="0.8.0"
 _USE_DEBUG=0
 
 # _debug()
@@ -206,14 +206,36 @@ trim_string() {
 
 # Adds a new boilerplate
 # @param boilerplates_path
-# @param src
-# @param dest
+# @param {String} Boilerplates path
+# @param {String} src
+# @param {String} dest
 _new_boilerplate() {
   # 1. Normalize paths
   local boilerplates_path="$1"
-  local boilerplate="$2"
+  local src="$2"
   local dest="$3"
-  local src=$(realpath "$boilerplates_path$boilerplate")
+  dest=$(realpath "$boilerplates_path$dest")
+
+  cp "$src" "$dest" -ir
+
+  # Open in editor
+  if [[ -n $(command -v vifm) ]]; then
+    vifm "$dest"
+  else
+    $EDITOR "$dest"
+  fi
+}
+
+# Removes a boilerplate
+# @param boilerplates_path
+# @param {String} src
+_remove_boilerplate() {
+  # 1. Normalize paths
+  local boilerplates_path="$1"
+  local src="$2"
+  src=$(realpath "$boilerplates_path$src")
+
+  rm "$src" -ir
 }
 
 # Replace placeholder in files with their variable
@@ -312,6 +334,10 @@ _NEW_OPTION=0
 _NEW_ARG=""
 _NEW_ARG2=""
 
+# Remove
+_REMOVE_OPTION=0
+_REMOVE_ARG=""
+
 # Edit
 _EDIT_OPTION=0
 _EDIT_ARG=""
@@ -360,6 +386,11 @@ do
       _NEW_ARG="${__maybe_param}";
       _require_argument "${__option}" "${__maybe_param2}"
       _NEW_ARG2="${__maybe_param2}";
+      ;;
+    r|rm|remove)
+      _REMOVE_OPTION=1;
+      _require_argument "${__option}" "${__maybe_param}"
+      _REMOVE_ARG="${__maybe_param}";
       ;;
     g|generate)
       _GENERATE_OPTION=1;
@@ -414,8 +445,10 @@ _main() {
     _print_version
   elif ((_LIST_OPTION)); then
     _list_boilerplates "$boilerplates_path" "$_LIST_ARG" "$_LIST_FORMAT_ARG" "$_TREE_LEVEL_ARG"
+  elif ((_REMOVE_OPTION)); then
+    _remove_boilerplate "$boilerplates_path" "$_REMOVE_ARG"
   elif ((_NEW_OPTION)); then
-    _new_boilerplate "$boilerplates_path" "$_ADD_ARG" "$_ADD_ARG2"
+    _new_boilerplate "$boilerplates_path" "$_NEW_ARG" "$_NEW_ARG2"
   elif ((_GENERATE_OPTION)); then
     _generate_boilerplate "$boilerplates_path" "$_GENERATE_ARG" "$_GENERATE_ARG2"
   elif ((_EDIT_OPTION)); then
