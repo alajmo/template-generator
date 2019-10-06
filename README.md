@@ -25,7 +25,7 @@ Furthermore, if you want bash-autocompletion:
 ```
 template-generator - Template generator CLI
 
-Usage: ${_ME} [command] [arguments]
+Usage: tp [command] [arguments]
 
 Options:
   -h, --help                       Print this help
@@ -54,8 +54,9 @@ Boilerplate Path:
   The order of precedence (highest to lowest) is:
     1. Path specified in options
     2. Environment variable BOILERPLATES_PATH
-    3. \$PWD/.boilerplates/
-    4. \$PWD/boilerplates/
+    3. $PWD/.boilerplates/
+    4. $PWD/boilerplates/
     5. ~/.boilerplates/
     6. ~/boilerplates/
+
 ```
