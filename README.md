@@ -25,7 +25,7 @@ Furthermore, if you want bash-autocompletion:
 ```
 template-generator - Template generator CLI
 
-Usage: tp [command] [arguments]
+Usage: ${_ME} [command] [arguments]
 
 Options:
   -h, --help                       Print this help
@@ -35,10 +35,12 @@ Options:
   -f, --format <tree|line>         List format [default: tree]
 
 Commands:
-  list|ls|l [subdirectory]                List boilerplates.
-  generate|g [boilerplate] [destination]  Generate boilerplate.
-  preview|p [boilerplate]                 Preview boilerplate.
-  edit|e [boilerplate]                    Edit boilerplate in editor.
+  list|ls|l [subdirectory]         List boilerplates.
+  generate|g [boilerplate] [dest]  Generate boilerplate.
+  preview|p [boilerplate]          Preview boilerplate.
+  edit|e [boilerplate]             Edit boilerplate in editor.
+  remove|rm|r [boilerplate]        Remove a boilerplate.
+  new|n [file] [dest]              Add a new boilerplate.
 
 Examples:
   # Show first depth level of boilerplates path.
@@ -52,8 +54,8 @@ Boilerplate Path:
   The order of precedence (highest to lowest) is:
     1. Path specified in options
     2. Environment variable BOILERPLATES_PATH
-    3. $PWD/.boilerplates/
-    4. $PWD/boilerplates/
+    3. \$PWD/.boilerplates/
+    4. \$PWD/boilerplates/
     5. ~/.boilerplates/
     6. ~/boilerplates/
 ```
