@@ -9,7 +9,7 @@ SAFER_IFS=$'\n\t'
 IFS="${SAFER_IFS}"
 
 _ME=$(basename "${0}")
-_VERSION="0.9.2"
+_VERSION="0.10.0"
 _USE_DEBUG=0
 
 # _debug()
@@ -300,8 +300,16 @@ _generate_boilerplate() {
 }
 
 _edit_boilerplate() {
-  local filepath="$1$2"
-  $EDITOR "$filepath"
+  local path="$1$2"
+  if [[ -d "$path" ]]; then
+    if [[ -n $(command -v vifm) ]]; then
+      vifm "$path"
+    else
+      $EDITOR "$path"
+    fi
+  else
+    $EDITOR "$path"
+  fi
 }
 
 _preview_boilerplate() {
