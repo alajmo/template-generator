@@ -9,7 +9,7 @@ SAFER_IFS=$'\n\t'
 IFS="${SAFER_IFS}"
 
 _ME=$(basename "${0}")
-_VERSION="0.10.0"
+_VERSION="0.10.1"
 _USE_DEBUG=0
 
 # _debug()
@@ -218,7 +218,7 @@ _new_boilerplate() {
   local dest="$3"
   dest=$(realpath "$boilerplates_path$dest")
 
-  cp "$src" "$dest" -ir
+  cp "$src" "$dest" -irL
 
   # Open in editor
   if [[ -n $(command -v vifm) ]]; then
@@ -292,7 +292,7 @@ _generate_boilerplate() {
   else
     dest=$(realpath "$dest")
   fi
-  cp "$src" "$dest" -ir
+  cp "$src" "$dest" -irL
 
   # 3. Replace variables
   local files=$(find "$dest" -type f)
