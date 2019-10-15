@@ -84,6 +84,7 @@ Options:
   -f, --format <tree|line>         List format [default: tree]
 
 Commands:
+
   list|ls|l [subdirectory]         List boilerplates.
   generate|g [boilerplate] [dest]  Generate boilerplate.
   preview|p [boilerplate]          Preview boilerplate.
@@ -92,6 +93,7 @@ Commands:
   new|n [file] [dest]              Add a new boilerplate.
 
 Examples:
+
   # Show first depth level of boilerplates path.
   $ tp ls -L 1
 
