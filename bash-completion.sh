@@ -132,7 +132,7 @@ _tp_boilerplate_complete() {
 }
 
 _tp() {
-    local commands="list new generate edit create preview --help --version"
+    local commands="list new remove generate edit create preview --help --version"
     cur=`_get_cword`
     prev=${COMP_WORDS[COMP_CWORD-1]}
     prev2=${COMP_WORDS[COMP_CWORD-2]}
@@ -141,18 +141,20 @@ _tp() {
         # TODO: Add flags COMPREPLY+=($(compgen -W "--format --level" -- ${cur}))
         if [[ "$prev" == "generate" ]]; then
             _tp_boilerplate_complete 1
-        elif [[ "$prev2" == "generate" ]]; then
-            _filedir
         elif [[ "$prev" == "list" ]]; then
             _tp_boilerplate_dir_complete 1
+        elif [[ "$prev" == "remove" ]]; then
+            _tp_boilerplate_complete 1
         elif [[ "$prev" == "new" ]]; then
             _filedir
-        elif [[ "$prev2" == "new" ]]; then
-            _tp_boilerplate_dir_complete 1
         elif [[ "$prev" == "edit" ]]; then
             _tp_boilerplate_complete 1
         elif [[ "$prev" == "preview" ]]; then
             _tp_boilerplate_complete 1
+        elif [[ "$prev2" == "generate" ]]; then
+            _filedir
+        elif [[ "$prev2" == "new" ]]; then
+            _tp_boilerplate_dir_complete 1
         fi
 
     else
