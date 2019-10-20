@@ -95,10 +95,10 @@ Commands:
 Examples:
 
   # Show first depth level of boilerplates path.
-  $ tp ls -L 1
+  $ ${_ME} list -L 1
 
   # Copy boilerplate file.txt to current directory with filename new-file.txt
-  $ tp generate files/file.txt new-file.txt
+  $ ${_ME} generate files/file.txt new-file.txt
 
 Boilerplate Path:
 

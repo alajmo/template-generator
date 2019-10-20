@@ -18,7 +18,7 @@ A simple bash script used to manage boilerplates.
 Furthermore, if you want bash-autocompletion:
 
 3. [Install boilerplates-completion](https://github.com/scop/bash-completion).
-4. Source [bash-completion.sh](bash-completion.sh) from `~/.bash_completion`.
+4. Source [tp-completion.sh](tp-completion.sh) from `~/.bash_completion`.
 
 ## Usage
 
