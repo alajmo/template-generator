@@ -218,15 +218,24 @@ _new_boilerplate() {
   local boilerplates_path="$1"
   local src="$2"
   local dest="$3"
-  dest=$(realpath "$boilerplates_path$dest")
 
-  cp "$src" "$dest" -irL
+  if [[ -n "$src" && -n "$dest" ]]; then
+    dest=$(realpath "$boilerplates_path$dest")
 
-  # Open in editor
-  if [[ -n $(command -v vifm) ]]; then
-    vifm "$dest"
+    cp "$src" "$dest" -irL
+
+    # Open in editor
+    if [[ -n $(command -v vifm) ]]; then
+      vifm "$dest"
+    else
+      $EDITOR "$dest"
+    fi
   else
-    $EDITOR "$dest"
+    if [[ -n $(command -v vifm) ]]; then
+      vifm "$boilerplates_path"
+    else
+      $EDITOR "$boilerplates_path"
+    fi
   fi
 }
 
@@ -401,9 +410,7 @@ do
       ;;
     n|new)
       _NEW_OPTION=1;
-      _require_argument "${__option}" "${__maybe_param}"
       _NEW_ARG="${__maybe_param}";
-      _require_argument "${__option}" "${__maybe_param2}"
       _NEW_ARG2="${__maybe_param2}";
       ;;
     r|rm|remove)
