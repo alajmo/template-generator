@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add remove command to bash completions
 - Command new without argument opens up vifm editor now in boilerplate path
+- Edit command should work without argument (open base folder)
 
 ## [0.10.1] - 2019-10-14
 

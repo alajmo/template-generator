@@ -431,7 +431,6 @@ do
       ;;
     e|edit)
       _EDIT_OPTION=1;
-      _require_argument "${__option}" "${__maybe_param}"
       _EDIT_ARG="${__maybe_param}";
       ;;
     -b|--boilerplate-path)
